@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+	<div class="row d-flex justify-content-center">
+		<div class="col-md-6 mt-3 card shadow-sm p-2">
+			{% for message in messages %}
+				<div class="alert alert-success p-2">{{message}}</div>
+			{% endfor %}
+			<form method="POST" id="form" enctype="multipart/form-data" novalidate="">
+				{% csrf_token %}
+				    <label for="id_title">Title:</label>
+				    <input type="text" name="title" class="form-control" maxlength="100" id="id_title">
+				    <label for="id_file">File:</label>
+				    <input type="file" name="file" class="form-control" required id="id_file">
+				    <input type="submit" name="submit" value="Uplod" class="form-control mt-3">
+			</form>
+		</div>
+	</div>
+	
+</div>
+
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+<script  src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+ <script>
+// var csrf = document.getElementsByName('csrfmiddlewaretoken');
+// var title = $("#id_title");
+// var file = $("#id_file");
+// var form = $("#form")
+
+
+$('#form').submit(function(event){
+	event.preventDefault();
+	form = $(this);
+	console.log(form.serialize())
+	$.ajax({
+		type:"POST",
+		url: '/create',
+		data : new FormData(this),
+		success: function(){
+			console.log('Success')
+		},
+		error : function(){
+			console.log('Error')
+		},
+		cache: false,
+        contentType: false,
+        processData: false
+	})
+
+})
+</script>
+{% endblock  %}
